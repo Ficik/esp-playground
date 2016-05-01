@@ -10,13 +10,16 @@ function Led.create_pin(pwm, pin)
     value = 0
   }
 
-  pwm.setup(Pin.pin, 200, Pin.value)
+  pwm.setup(Pin.pin, 400, Pin.value)
   pwm.start(Pin.pin)
 
   function Pin.set_value(value)
-    if value ~= nil then
+    if value ~= nil and Pin.value ~= value then
       Pin.value = value
-      pwm.setduty(Pin.pin, value * 4)
+      if value > 0 then
+        value = ((value + 1) * 4) - 1
+      end
+      pwm.setduty(Pin.pin, value)
     end
   end
 

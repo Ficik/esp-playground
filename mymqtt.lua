@@ -34,7 +34,7 @@ end
 function MyMQTT.send(topic, payload)
   if MyMQTT.connected == 1 then
     print("MQTT Message: "..topic..": "..payload)
-    m:publish(topic, payload, 0, 0)
+    MyMQTT.client:publish(topic, payload, 0, 0)
   end
 end
 

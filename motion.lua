@@ -1,28 +1,50 @@
-MOTION_PIN = 5
+Motion = {
+  sensors = {}
+}
 
-gpio.mode(MOTION_PIN, gpio.OUTPUT)
-gpio.mode(MOTION_PIN, gpio.HIGH)
-
-last_state = 0
-
-tmr.alarm(3, 1000, 1, function()
-    tmr.stop(3)
-    gpio.mode(MOTION_PIN, gpio.LOW)
-    gpio.mode(MOTION_PIN, gpio.INPUT)
-    tmr.alarm(3, 100, 1, function()
-        value = gpio.read(MOTION_PIN)
-        if last_state ~= value then
-            send_mqtt_message("/living-room/motion", value)
-            last_state = value
-        end
-        if led_mode == LED_MODE_AUTO then
-          if value == 1 then
-            set_target_color(255, 140, 17, 255)
-          else
-            set_target_color(0, 0, 0, 0)
-          end
-        end
+function Motion.start()
+  tmr.alarm(3, 100, 1, function()
+    table.foreach(Motion.sensors, function(index, sensor)
+      sensor.read()
     end)
-end)
+  end)
+end
 
+function Motion.new(pin, mqtt_endpoint)
 
+  motion = {
+    pin = pin,
+    mqtt_endpoint = mqtt_endpoint,
+    last_state = 0,
+    calibration = 10
+  }
+
+  function motion.read()
+    if motion.calibration ~= 0 then
+        if motion.calibration == 1 then
+            gpio.write(motion.pin, gpio.LOW)          
+            gpio.mode(motion.pin, gpio.INPUT)
+        end
+        motion.calibration = motion.calibration - 1
+        return 0
+    end
+    value = gpio.read(motion.pin)
+    if motion.last_state ~= value then
+      motion.last_state = value
+      motion.report(value)
+    end
+    return value
+  end
+
+  function motion.report(value)
+    MyMQTT.send(motion.mqtt_endpoint, value)
+  end
+
+  gpio.mode(motion.pin, gpio.OUTPUT)
+  gpio.write(motion.pin, gpio.HIGH)
+  table.insert(Motion.sensors, motion)
+  print("new pin initialized")
+end
+
+Motion.new(5, '/living-room/kitchen/motion')
+Motion.start()

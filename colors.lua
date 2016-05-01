@@ -32,9 +32,17 @@ function Color.create(r, g, b, a)
       return from
     end
     if to > from then
-      return from + speed_up
+      if from + speed_up > to then
+        return to
+      else
+        return from + speed_up
+      end
     elseif to < from then
-      return from - speed_down
+      if from - speed_down < to then
+        return to
+      else
+        return from - speed_down
+      end
     else
       return from
     end
@@ -43,10 +51,10 @@ function Color.create(r, g, b, a)
   function color.move(new_color, step)
     if new_color ~= nil then
       color.set(Color.create(
-        move(new_color.r, color.r, step.red_up, step.red_down),
-        move(new_color.g, color.g, step.green_up, step.green_down),
-        move(new_color.b, color.b, step.blue_up, step.blue_down),
-        move(new_color.a, color.a, step.alpha_up, step.alpha_down)
+        move(color.r, new_color.r, step.red_up, step.red_down),
+        move(color.g, new_color.g, step.green_up, step.green_down),
+        move(color.b, new_color.b, step.blue_up, step.blue_down),
+        move(color.a, new_color.a, step.alpha_up, step.alpha_down)
       ))
     end
     return color
