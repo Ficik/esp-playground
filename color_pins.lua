@@ -1,5 +1,3 @@
-dofile("colors.lua")
-
 Led = {}
 
 function Led.create_pin(pwm, pin)

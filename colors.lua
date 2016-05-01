@@ -52,6 +52,10 @@ function Color.create(r, g, b, a)
     return color
   end
 
+  function color.string()
+    return color.r..", "..color.g..", "..color.b..", "..color.a
+  end
+
   return color
 end
 
