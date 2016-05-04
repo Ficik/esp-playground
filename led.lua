@@ -40,7 +40,7 @@ end)
 MyMQTT.subscribe(PREFIX.."/motion", function(topic, payload)
     if LedStrip.mode == LedStrip.LED_MODE_AUTO then
         if payload == "1" then
-            LedStrip.target_color.set(Color.create(255, 127, 15, 255))
+            LedStrip.target_color.set(Color.create(0, 0, 0, 255))
         else
             LedStrip.target_color.set(Color.create(0, 0, 0, 0))
         end
@@ -48,7 +48,7 @@ MyMQTT.subscribe(PREFIX.."/motion", function(topic, payload)
 end)
 
 -- Movement towards target color instead of direct switching
-tmr.alarm(2, 100, tmr.ALARM_AUTO, function()
+tmr.alarm(2, 150, tmr.ALARM_AUTO, function()
   --print(LedStrip.assignment.color.string())
   LedStrip.assignment.set_color(LedStrip.assignment.color.move(LedStrip.target_color, LedStrip.SPEED))
   --LedStrip.assignment.set_color(LedStrip.target_color)

@@ -3,7 +3,7 @@ Motion = {
 }
 
 function Motion.start()
-  tmr.alarm(3, 100, 1, function()
+  tmr.alarm(3, 128, 1, function()
     table.foreach(Motion.sensors, function(index, sensor)
       sensor.read()
     end)

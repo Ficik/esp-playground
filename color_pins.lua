@@ -10,7 +10,7 @@ function Led.create_pin(pwm, pin)
     value = 0
   }
 
-  pwm.setup(Pin.pin, 400, Pin.value)
+  pwm.setup(Pin.pin, 1000, Pin.value)
   pwm.start(Pin.pin)
 
   function Pin.set_value(value)
