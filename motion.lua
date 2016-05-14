@@ -37,7 +37,11 @@ function Motion.new(pin, mqtt_endpoint)
   end
 
   function motion.report(value)
-    MyMQTT.send(motion.mqtt_endpoint, value)
+    if value == 1 then
+        MyMQTT.send(motion.mqtt_endpoint, "MOVEMENT")
+    else
+        MyMQTT.send(motion.mqtt_endpoint, "CALM")
+    end
   end
 
   gpio.mode(motion.pin, gpio.OUTPUT)
@@ -46,5 +50,5 @@ function Motion.new(pin, mqtt_endpoint)
   print("new pin initialized")
 end
 
-Motion.new(5, '/living-room/kitchen/motion')
+Motion.new(5, '/living-room/motion')
 Motion.start()
