@@ -2,3 +2,11 @@ WIFI_ESSID = ""
 WIFI_PASSWORD = ""
 MQTT_IP = "192.168.0.33
 MQTT_PORT = 1883
+MQTT_PREFIX = '/living-room'
+
+
+MOTION_PIN = 5
+FAN_PIN = 6
+DHT_PIN = 7
+
+

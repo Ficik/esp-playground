@@ -50,5 +50,5 @@ function Motion.new(pin, mqtt_endpoint)
   print("new pin initialized")
 end
 
-Motion.new(5, '/living-room/motion')
+Motion.new(MOTION_PIN, MQTT_PREFIX..'/motion')
 Motion.start()

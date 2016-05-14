@@ -1,5 +1,3 @@
-PREFIX = "/living-room"
-
 LedStrip = {
   LED_MODE_AUTO = 0,
   LED_MODE_MANUAL = 1,
@@ -20,7 +18,7 @@ LedStrip.SPEED = {
   alpha_down = 2
 }
 
-MyMQTT.subscribe(PREFIX.."/kitchen-ambi/mode", function(topic, payload)
+MyMQTT.subscribe(MQTT_PREFIX.."/kitchen-ambi/mode", function(topic, payload)
   if payload == "AUTO" then
     LedStrip.mode = LedStrip.LED_MODE_AUTO
   elseif payload == "DIRECT" then
@@ -30,7 +28,7 @@ MyMQTT.subscribe(PREFIX.."/kitchen-ambi/mode", function(topic, payload)
   end
 end)
 
-MyMQTT.subscribe(PREFIX.."/kitchen-ambi/color", function(topic, payload)
+MyMQTT.subscribe(MQTT_PREFIX.."/kitchen-ambi/color", function(topic, payload)
     LedStrip.target_color.set(Color.from_hex(payload))
     LedStrip.mode = LedStrip.LED_MODE_MANUAL
 end)
@@ -40,7 +38,7 @@ MyMQTT.subscribe(PREFIX.."/kitchen-ambi/white", function(topic, payload)
     LedStrip.mode = LedStrip.LED_MODE_MANUAL
 end)
 
-MyMQTT.subscribe(PREFIX.."/motion", function(topic, payload)
+MyMQTT.subscribe(MQTT_PREFIX.."/motion", function(topic, payload)
     if LedStrip.mode == LedStrip.LED_MODE_AUTO then
         if payload == "MOVEMENT" then
             LedStrip.movement_color.set(Color.create(0, 0, 0, 255))
